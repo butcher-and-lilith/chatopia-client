@@ -6,6 +6,10 @@ export const colors = {
     gray: "#252329",
     blue: "#2F80ED",
     white: "#FFF",
+    textGray: "#E0E0E0",
+    textGrayLight: "#BDBDBD",
+    textGrayName: "#828282",
+    input: "#3C393F",
   },
 };
 
