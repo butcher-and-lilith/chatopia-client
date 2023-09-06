@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import { AddIcon, ChevronUpIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Grid,
@@ -15,9 +13,6 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-
-import { getFirstTwoInitials } from "@/utils/string/get-first-two-initials";
-import { HEADER_PADDING } from "@/theme/constants";
 
 import Sidebar from "./Sidebar";
 
