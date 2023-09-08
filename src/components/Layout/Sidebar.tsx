@@ -25,12 +25,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { HEADER_PADDING } from "@/theme/constants";
-import { getFirstTwoInitials } from "@/utils/string/get-first-two-initials";
 import { AddIcon, SearchIcon, ChevronUpIcon } from "@chakra-ui/icons";
 
 import "./styles.css";
 import Menu from "../Menu/Menu";
 import { useOnClickOutside } from "@/hooks/use-on-click-outside";
+import ChannelName from "../ChannelName/ChannelName";
 
 const DUMMY_CHANNELS = [
   {
@@ -93,7 +93,7 @@ export default function Sidebar() {
               aria-label="Add Channel"
               size="sm"
               icon={<AddIcon />}
-              transition="all 100ms"
+              transition="transform 100ms"
               _active={{ transform: "scale(0.8)" }}
               onClick={onToggleChannel}
             />
@@ -122,46 +122,7 @@ export default function Sidebar() {
               overflowX="hidden"
             >
               {DUMMY_CHANNELS.map((item, i) => (
-                <Box
-                  key={i}
-                  border="transparent"
-                  borderRadius="5px"
-                  p="8px 9px"
-                  _hover={{
-                    bg: "main.gray",
-                  }}
-                  w="100%"
-                  cursor="pointer"
-                >
-                  <HStack
-                    spacing="12px"
-                    fontSize="18px"
-                    transition="all 100ms"
-                    _active={{ transform: "scale(0.95)" }}
-                    userSelect="none"
-                  >
-                    <Text
-                      p="8px 9px"
-                      border="none"
-                      borderRadius="8px"
-                      bg="main.gray"
-                      fontWeight={600}
-                      w="42px"
-                      h="42px"
-                      textAlign="center"
-                      color="main.textGray"
-                    >
-                      {getFirstTwoInitials(item.name)}
-                    </Text>
-                    <Text
-                      color="main.textGrayLight"
-                      fontWeight={700}
-                      noOfLines={1}
-                    >
-                      {item.name}
-                    </Text>
-                  </HStack>
-                </Box>
+                <ChannelName key={i} name={item.name} />
               ))}
             </VStack>
           </Box>
@@ -193,7 +154,7 @@ export default function Sidebar() {
             size="lg"
             _hover={{ bg: "main.gray" }}
             transform={isMenuOpen ? "rotate(180deg)" : "rotate(0deg)"}
-            transition="transform scale 100ms"
+            transition="transform 200ms"
             _active={{ transform: "scale(0.8)" }}
             onClick={handleToggleMenu}
           />
@@ -214,6 +175,8 @@ export default function Sidebar() {
         initialFocusRef={initialChannelRef}
         isOpen={isOpenAddChannel}
         onClose={onCloseChannel}
+        isCentered
+        size="lg"
       >
         <ModalOverlay bg="blackAlpha.500" backdropFilter="blur(10px)" />
         <ModalContent bg="main.gray" color="main.white">
@@ -221,13 +184,11 @@ export default function Sidebar() {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
-              <FormLabel>Channel</FormLabel>
-              <Input ref={initialChannelRef} placeholder="Channel" />
+              <Input ref={initialChannelRef} placeholder="Channel Name" />
             </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Description</FormLabel>
-              <Input placeholder="Descriptison" />
+            <FormControl mt="26px">
+              <Input placeholder="Channel Description" />
             </FormControl>
           </ModalBody>
 
