@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import Image from "next/image";
 
@@ -52,16 +52,21 @@ const DUMMY_CHANNELS = [
 
 export default function Sidebar() {
   const menuRef = useRef<HTMLDivElement>(null);
+  const menuContainerRef = useRef<HTMLDivElement>(null);
   const initialChannelRef = useRef<HTMLInputElement>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const { isOpen: isOpenProfile, onToggle: onToggleProfile } = useDisclosure();
   const {
     isOpen: isOpenAddChannel,
     onToggle: onToggleChannel,
     onClose: onCloseChannel,
   } = useDisclosure();
 
-  useOnClickOutside(menuRef, onToggleProfile);
+  function handleToggleMenu() {
+    setIsMenuOpen((prev) => !prev);
+  }
+
+  useOnClickOutside(menuContainerRef, () => setIsMenuOpen(false));
 
   return (
     <GridItem h="100%" bg="main.black" color="main.white">
@@ -168,6 +173,7 @@ export default function Sidebar() {
           spacing="20px"
           p="14px 21px"
           position="relative"
+          ref={menuContainerRef}
         >
           <HStack spacing="25px">
             <Image
@@ -186,16 +192,16 @@ export default function Sidebar() {
             color="main.white"
             size="lg"
             _hover={{ bg: "main.gray" }}
-            transform={isOpenProfile ? "rotate(180deg)" : "rotate(0deg)"}
+            transform={isMenuOpen ? "rotate(180deg)" : "rotate(0deg)"}
             transition="transform scale 100ms"
             _active={{ transform: "scale(0.8)" }}
-            onClick={onToggleProfile}
+            onClick={handleToggleMenu}
           />
 
           <CSSTransition
             classNames="menu"
             nodeRef={menuRef}
-            in={isOpenProfile}
+            in={isMenuOpen}
             timeout={300}
             unmountOnExit
           >

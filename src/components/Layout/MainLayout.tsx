@@ -1,18 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Box,
-  Grid,
-  GridItem,
-  HStack,
-  IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 
 import Sidebar from "./Sidebar";
 
