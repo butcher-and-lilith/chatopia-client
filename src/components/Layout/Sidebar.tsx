@@ -1,14 +1,25 @@
 import { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
+import Image from "next/image";
 
 import {
   Box,
+  Button,
+  FormControl,
+  FormLabel,
   GridItem,
   HStack,
   IconButton,
   Input,
   InputGroup,
   InputLeftElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
   VStack,
   useDisclosure,
@@ -16,10 +27,10 @@ import {
 import { HEADER_PADDING } from "@/theme/constants";
 import { getFirstTwoInitials } from "@/utils/string/get-first-two-initials";
 import { AddIcon, SearchIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import Image from "next/image";
 
 import "./styles.css";
 import Menu from "../Menu/Menu";
+import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 
 const DUMMY_CHANNELS = [
   {
@@ -40,9 +51,17 @@ const DUMMY_CHANNELS = [
 ];
 
 export default function Sidebar() {
-  const menuRef = useRef<HTMLDivElement>();
+  const menuRef = useRef<HTMLDivElement>(null);
+  const initialChannelRef = useRef<HTMLInputElement>(null);
 
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen: isOpenProfile, onToggle: onToggleProfile } = useDisclosure();
+  const {
+    isOpen: isOpenAddChannel,
+    onToggle: onToggleChannel,
+    onClose: onCloseChannel,
+  } = useDisclosure();
+
+  useOnClickOutside(menuRef, onToggleProfile);
 
   return (
     <GridItem h="100%" bg="main.black" color="main.white">
@@ -71,6 +90,7 @@ export default function Sidebar() {
               icon={<AddIcon />}
               transition="all 100ms"
               _active={{ transform: "scale(0.8)" }}
+              onClick={onToggleChannel}
             />
           </HStack>
 
@@ -166,15 +186,16 @@ export default function Sidebar() {
             color="main.white"
             size="lg"
             _hover={{ bg: "main.gray" }}
-            transition="all 100ms"
+            transform={isOpenProfile ? "rotate(180deg)" : "rotate(0deg)"}
+            transition="transform scale 100ms"
             _active={{ transform: "scale(0.8)" }}
-            onClick={onToggle}
+            onClick={onToggleProfile}
           />
 
           <CSSTransition
             classNames="menu"
             nodeRef={menuRef}
-            in={isOpen}
+            in={isOpenProfile}
             timeout={300}
             unmountOnExit
           >
@@ -182,6 +203,36 @@ export default function Sidebar() {
           </CSSTransition>
         </HStack>
       </VStack>
+
+      <Modal
+        initialFocusRef={initialChannelRef}
+        isOpen={isOpenAddChannel}
+        onClose={onCloseChannel}
+      >
+        <ModalOverlay bg="blackAlpha.500" backdropFilter="blur(10px)" />
+        <ModalContent bg="main.gray" color="main.white">
+          <ModalHeader>New Channel</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Channel</FormLabel>
+              <Input ref={initialChannelRef} placeholder="Channel" />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Description</FormLabel>
+              <Input placeholder="Descriptison" />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Save
+            </Button>
+            <Button onClick={onCloseChannel}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </GridItem>
   );
 }
