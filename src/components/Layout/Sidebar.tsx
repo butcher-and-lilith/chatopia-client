@@ -180,15 +180,30 @@ export default function Sidebar() {
       >
         <ModalOverlay bg="blackAlpha.500" backdropFilter="blur(10px)" />
         <ModalContent bg="main.gray" color="main.white">
-          <ModalHeader>New Channel</ModalHeader>
+          <ModalHeader fontWeight={700} letterSpacing="-0.63px">
+            NEW CHANNEL
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
-              <Input ref={initialChannelRef} placeholder="Channel Name" />
+              <Input
+                ref={initialChannelRef}
+                placeholder="Channel Name"
+                type="text"
+                bg="main.input"
+                border="none"
+                h="48px"
+              />
             </FormControl>
 
             <FormControl mt="26px">
-              <Input placeholder="Channel Description" />
+              <Input
+                placeholder="Channel Description"
+                type="text"
+                bg="main.input"
+                border="none"
+                h="48px"
+              />
             </FormControl>
           </ModalBody>
 
